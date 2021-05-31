@@ -47,6 +47,7 @@ int main()
 	int index = -1;
 
 	srand(time(NULL));
+	printf("[----- [정세연] [2018038027] -----]\n");
 
 	do{
 		printf("----------------------------------------------------------------\n");
@@ -60,6 +61,7 @@ int main()
 		printf("----------------------------------------------------------------\n");
 
 		printf("Command = ");
+		fflush(stdout);
 		scanf(" %c", &command);
 
 		switch(command) {
@@ -101,6 +103,7 @@ int main()
 
 		case 'e': case 'E':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key);
 			printArray(hashtable);
 			index = search(hashtable, key);
@@ -224,6 +227,7 @@ int insertionSort(int *a)
 
 int bubbleSort(int *a)
 {
+	//버블 정렬: 이웃한 데이터들을 비교하여 가장 큰 값을 맨 뒤로 보내면서 정렬하는 방식
 	int i, j, t;
 
 	printf("Bubble Sort: \n");
@@ -231,15 +235,15 @@ int bubbleSort(int *a)
 
 	printArray(a);
 
-	for(i = 0; i < MAX_ARRAY_SIZE; i++)
+	for(i = 0; i < MAX_ARRAY_SIZE; i++) //i<MAX_ARRAY_SIZE일 때까지 반복
 	{
-		for (j = 0; j < MAX_ARRAY_SIZE; j++)
+		for (j = 0; j < MAX_ARRAY_SIZE; j++)//j<MAX_ARRAY_SIZE일 떄까지 반복
 		{
-			if (a[j-1] > a[j])
+			if (a[j-1] > a[j]) //만약 배열에서 a[j-1]의 값이 a[j]보다 크다면
 			{
-				t = a[j-1];
-				a[j-1] = a[j];
-				a[j] = t;
+				t = a[j-1]; //t는 a[j-1]의 값으로 설정
+				a[j-1] = a[j]; //a[j-1]의 값을 a[j]로 설정
+				a[j] = t; //a[j]를 t의 값으로 설정
 			}
 		}
 	}
@@ -252,27 +256,28 @@ int bubbleSort(int *a)
 
 int shellSort(int *a)
 {
-	int i, j, k, h, v;
+	//셸정렬 : 증분으로 배열의 구간을 나누어 정렬하는 방법
+	int i, j, k, h, v; //h는 증분값
 
 	printf("Shell Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
 	printArray(a);
 
-	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2)
+	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2)  //증분값은 MAX_ARRAY_SIZE/2이고 한번의 반복마다 h에 2를 나눈다.
 	{
 		for (i = 0; i < h; i++)
 		{
-			for(j = i + h; j < MAX_ARRAY_SIZE; j += h)
+			for(j = i + h; j < MAX_ARRAY_SIZE; j += h) //j는 i+h이고 한번의 반복마다 j = j+h의 연산을 해준다
 			{
-				v = a[j];
-				k = j;
-				while (k > h-1 && a[k-h] > v)
+				v = a[j]; //v는 a[j]로 설정
+				k = j; //k는 j로 설정
+				while (k > h-1 && a[k-h] > v) //k>h-1이고 a[k-h]>v 이면 반복
 				{
-					a[k] = a[k-h];
-					k -= h;
+					a[k] = a[k-h]; //a[k]에 a[k-h]의 값을 대입
+					k -= h; //k = k-h의 연산을 수행
 				}
-				a[k] = v;
+				a[k] = v; //a[k]는 v
 			}
 		}
 	}
@@ -284,31 +289,34 @@ int shellSort(int *a)
 
 int quickSort(int *a, int n)
 {
+	//퀵 정렬: 기준치를 정하여 기준치보다 큰 값과 작은 값을 찾아 교환해주는 방식의 정렬
 	int v, t;
 	int i, j;
 
-	if (n > 1)
+	if (n > 1) //만약 기준치가 1보다 크다면
 	{
-		v = a[n-1];
-		i = -1;
-		j = n - 1;
+		v = a[n-1]; //v는 a[n-1]의 값
+		i = -1; //i는 -1
+		j = n - 1; //j는 n-1의 값
 
 		while(1)
 		{
-			while(a[++i] < v);
-			while(a[--j] > v);
+			while(a[++i] < v); //a[++i] <v 일때까지 반복 (기준값보다 큰값을 찾음)
+			while(a[--j] > v); //a[--j] >v 일때까지 반복 (기준값보다 작은값을 찾음)
 
-			if (i >= j) break;
-			t = a[i];
-			a[i] = a[j];
-			a[j] = t;
+			if (i >= j) break; //만약 i>=j이라면 반복문을 나감
+			//찾은 두개의 값의 자리를 바꿔준다
+			t = a[i]; // t의 값은 a[i]로 설정
+			a[i] = a[j]; //a[i]의 값은 a[j]로 설정
+			a[j] = t; //a[j]의 값은 t로 설정
 		}
-		t = a[i];
-		a[i] = a[n-1];
-		a[n-1] = t;
+		//반복문을 나가고
+		t = a[i]; //t는 a[i]로 설정
+		a[i] = a[n-1]; //a[i]는 a[n-1]로 설정
+		a[n-1] = t; //a[n-1]의 값은 t로 설정
 
-		quickSort(a, i);
-		quickSort(a+i+1, n-i-1);
+		quickSort(a, i); //a와 i의 값을 quickSort에 넣어서 재귀 시킨다.(기준값 왼쪽과 오른쪽으로 나누어서 다시 정렬을 해줌)
+		quickSort(a+i+1, n-i-1);//a+i+1와 n-i-1의 값을 quickSort에 넣어서 재귀 시킨다.(기준값 왼쪽과 오른쪽으로 나누어서 다시 정렬을 해줌)
 	}
 
 
