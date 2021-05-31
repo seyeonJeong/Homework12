@@ -140,21 +140,22 @@ int initialize(int** a)
 
 int freeArray(int *a)
 {
-	if(a != NULL)
-		free(a);
+	if (a != NULL) //만약 a가 NULL이 아닐경우
+		free(a); //a를 해제해준다
 	return 0;
 }
 
 void printArray(int *a)
 {
-	if (a == NULL) {
+	if (a == NULL) { //a의 값이 없다면 경고문구를 출력하고 return
 		printf("nothing to print.\n");
 		return;
 	}
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
+	// a[i]의 값을 출력해줌
+	for (int i = 0; i < MAX_ARRAY_SIZE; i++)
 		printf("a[%02d] ", i);
 	printf("\n");
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
+	for (int i = 0; i < MAX_ARRAY_SIZE; i++)
 		printf("%5d ", a[i]);
 	printf("\n");
 }
@@ -162,8 +163,9 @@ void printArray(int *a)
 
 int selectionSort(int *a)
 {
-	int min;
-	int minindex;
+	//선택정렬
+	int min; //최소값
+	int minindex; //최소값이 존재하는 인덱스
 	int i, j;
 
 	printf("Selection Sort: \n");
@@ -171,20 +173,20 @@ int selectionSort(int *a)
 
 	printArray(a);
 
-	for (i = 0; i < MAX_ARRAY_SIZE; i++)
+	for (i = 0; i < MAX_ARRAY_SIZE; i++) //모든인덱스에대하여 반복해준다
 	{
-		minindex = i;
-		min = a[i];
-		for(j = i+1; j < MAX_ARRAY_SIZE; j++)
-		{
-			if (min > a[j])
+		minindex = i; //minindex값을 i로 설정
+		min = a[i]; //min값을 a[i]의 값으로 설정
+		for (j = i + 1; j < MAX_ARRAY_SIZE; j++)
+		{ //인덱스 i 다음 인덱스부터 탐색
+			if (min > a[j])  //만약 min값보다 a[j]의 값이 더 작다면
 			{
-				min = a[j];
-				minindex = j;
+				min = a[j]; //min값은 a[j]로 설정
+				minindex = j; //최소인덱스는 j
 			}
 		}
-		a[minindex] = a[i];
-		a[i] = min;
+		a[minindex] = a[i]; //탐색을 마치고 가장 작은 값이 있던 자리에 a[i]값을 대입
+		a[i] = min; //a[i]의 값은 min값이됨  ( ex) 가장 작으면 a[0] = min)
 	}
 
 	printf("----------------------------------------------------------------\n");
@@ -194,6 +196,7 @@ int selectionSort(int *a)
 
 int insertionSort(int *a)
 {
+	//삽입 정렬 : 자료 배열의 모든 요소를 앞에서부터 차례대로 이미 정렬된 배열 부분과 비교하여 자리를 찾아 삽입함으로써 정렬을 완성
 	int i, j, t;
 
 	printf("Insertion Sort: \n");
@@ -201,16 +204,16 @@ int insertionSort(int *a)
 
 	printArray(a);
 
-	for(i = 1; i < MAX_ARRAY_SIZE; i++)
+	for (i = 1; i < MAX_ARRAY_SIZE; i++)
 	{
-		t = a[i];
-		j = i;
-		while (a[j-1] > t && j > 0)
+		t = a[i]; //우선 t를 a[i]의 값으로 설정한다.
+		j = i; //j를 i의 값으로 설정한다.
+		while (a[j - 1] > t && j > 0) //배열에서 앞에 있는 배열이 더 크고, j가 0보다 크다면 반복(앞과 뒤의 배열을 계속해서 비교해준다)
 		{
-			a[j] = a[j-1];
-			j--;
+			a[j] = a[j - 1]; //뒤에있는것을 앞의 배열의 자리로 옮겨줌
+			j--; //j = j-1의 연산을 수행
 		}
-		a[j] = t;
+		a[j] = t; // a[j]의 값에 t를 대입
 	}
 
 	printf("----------------------------------------------------------------\n");
@@ -313,7 +316,7 @@ int quickSort(int *a, int n)
 }
 
 int hashCode(int key) {
-   return key % MAX_HASH_TABLE_SIZE;
+	return key % MAX_HASH_TABLE_SIZE; //key 값에 MAX_HASH_TABLE_SIZE를 모듈연산하여 hashCode를 생성함
 }
 
 int hashing(int *a, int **ht)
