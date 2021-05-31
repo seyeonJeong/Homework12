@@ -318,49 +318,52 @@ int hashCode(int key) {
 
 int hashing(int *a, int **ht)
 {
-	int *hashtable = NULL;
+	int* hashtable = NULL;
 
 	/* hash table이 NULL인 경우 메모리 할당 */
-	if(*ht == NULL) {
+	if (*ht == NULL) {
 		hashtable = (int*)malloc(sizeof(int) * MAX_ARRAY_SIZE);
 		*ht = hashtable;  /* 할당된 메모리의 주소를 복사 --> main에서 배열을 control 할수 있도록 함*/
-	} else {
+	}
+	else {
 		hashtable = *ht;	/* hash table이 NULL이 아닌경우, table 재활용, reset to -1 */
 	}
 
-	for(int i = 0; i < MAX_HASH_TABLE_SIZE; i++)
+	for (int i = 0; i < MAX_HASH_TABLE_SIZE; i++)
 		hashtable[i] = -1;
 
 	/*
 	for(int i = 0; i < MAX_HASH_TABLE_SIZE; i++)
 		printf("hashtable[%d] = %d\n", i, hashtable[i]);
 	*/
-
+	//변수를 초기화 해준다.
 	int key = -1;
 	int hashcode = -1;
 	int index = -1;
+	//랜덤으로 생성한 값들에 hashcode를 할당해서 hashtable에 삽입해준다.
 	for (int i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
-		key = a[i];
-		hashcode = hashCode(key);
+		key = a[i]; //key는 a[i]에 들어있는 정수값
+		hashcode = hashCode(key); //hashcode를 만들어주는 함수에 key값을 삽입한다.
 		/*
 		printf("key = %d, hashcode = %d, hashtable[%d]=%d\n", key, hashcode, hashcode, hashtable[hashcode]);
 		*/
-		if (hashtable[hashcode] == -1)
+		if (hashtable[hashcode] == -1) //만약 hashtable[hashcode]에 해당하는 값이 -1이라면(hashtable이 비어있다면)
 		{
-			hashtable[hashcode] = key;
-		} else 	{
+			hashtable[hashcode] = key; //hashtable[hashcode]에 해당하는 장소에 key값을 삽입
+		}
+		else {
+			 //hashcode의 인덱스값에 해당하는 hashtable이 비어있지 않다면
+			index = hashcode; // index는 hashcode로 설정
 
-			index = hashcode;
-
-			while(hashtable[index] != -1)
+			while (hashtable[index] != -1) //선형 조사법을 사용하여 빈 인덱스값을 찾는다.
 			{
-				index = (++index) % MAX_HASH_TABLE_SIZE;
+				index = (++index) % MAX_HASH_TABLE_SIZE; //index는 index+1 을 해준 값에 MAX_HASH_TABLE_SIZE를 모듈연산 해준값으로 설정해준다.
 				/*
 				printf("index = %d\n", index);
 				*/
 			}
-			hashtable[index] = key;
+			hashtable[index] = key; // 빈 인덱스 값을 찾았다면 그 인덱스값에 해당하는 hashtable에 key값을 삽입
 		}
 	}
 
@@ -369,16 +372,16 @@ int hashing(int *a, int **ht)
 
 int search(int *ht, int key)
 {
-	int index = hashCode(key);
+	int index = hashCode(key); //index의 값을 key값을 hashCode함수에 넣은 값으로 변경
 
-	if(ht[index] == key)
-		return index;
+	if (ht[index] == key) //만약 ht[index]값이 key값이라면(찾는 값이라면)
+		return index; //index값을 return한다
 
-	while(ht[++index] != key)
+	while (ht[++index] != key) //index값이 key값이 아니라면(이런 경우면 같은 hashcode에 해당하는 값이 정해진 index값에 들어간 경우가 아니라 선형조사법을 이용해서 삽입해준 경우이므로 선형조사법처럼 모듈연산을 이용하여 ht[index]값이 key값이 될때까지 탐색한다.
 	{
 		index = index % MAX_HASH_TABLE_SIZE;
 	}
-	return index;
+	return index; //index값을 return 한다.
 }
 
 
